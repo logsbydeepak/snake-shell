@@ -1,21 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
-	"github.com/charmbracelet/bubbletea"
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/log"
 )
 
 func main() {
+	f, err := os.OpenFile("app.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("error opening file: %v", err)
+	}
+	defer f.Close()
+	log.SetOutput(f)
+
+	log.Info("START")
+
 	m := model{}
 	p := tea.NewProgram(m, tea.WithAltScreen())
 	if _, err := p.Run(); err != nil {
 		log.Error("Error while starting program", err)
 		os.Exit(1)
 	}
-	fmt.Println("snake-shell")
 }
 
 type model struct {
