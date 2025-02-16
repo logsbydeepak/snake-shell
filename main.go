@@ -26,6 +26,8 @@ func main() {
 }
 
 type model struct {
+	viewportWidth  int
+	viewportHeight int
 }
 
 func (m model) Init() tea.Cmd {
@@ -43,6 +45,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, tea.Quit
 			}
 		}
+	case tea.WindowSizeMsg:
+		log.Infof("Height: %v Width: %v", msg.Height, msg.Width)
+		m.viewportHeight = msg.Height
+		m.viewportWidth = msg.Width
 	}
 
 	return m, nil
